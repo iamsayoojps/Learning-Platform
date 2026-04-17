@@ -1,0 +1,31 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+
+import Dashboard from "./pages/Dashboard";
+import Courses from "./pages/Courses";
+import AddCourse from "./pages/AddCourses";
+import ViewCourse from "./pages/ViewCourse";
+import EditCourse from "./pages/EditCourse";
+
+function App() {
+  return (
+    <div className="flex">
+      <Sidebar />
+
+      <div className="flex-1">
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/add" element={<AddCourse />} />
+          <Route path="/courses/view/:id" element={<ViewCourse />} />
+          <Route path="/courses/edit/:id" element={<EditCourse />} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+export default App;
