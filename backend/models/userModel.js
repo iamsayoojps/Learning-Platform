@@ -18,6 +18,27 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    // cart
+    cart: [
+      {
+        course: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Course",
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
+    // wishlist
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
   },
   { timestamps: true },
 );

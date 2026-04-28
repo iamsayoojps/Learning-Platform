@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoute.js";
 import courseRoutes from "./routes/courseRoutes.js";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 import { connectDB } from "./config/db.js";
 dotenv.config();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 
 app.use("/api/users", authRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/cart", cartRoutes);
 
 connectDB();
 

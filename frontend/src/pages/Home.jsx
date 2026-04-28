@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FilterBar from "../components/FilterBar";
+import WishlistButton from "../common/WishlistButton";
+import CartButton from "../common/CartButton";
 import { useLocation } from "react-router-dom";
 
 const Home = () => {
@@ -169,12 +171,8 @@ const Home = () => {
               </div>
 
               <div className="flex gap-2 mt-auto pt-4">
-                <button className="flex-1 bg-indigo-600 text-white py-2 rounded-lg text-sm hover:bg-indigo-700 transition">
-                  Add to Cart
-                </button>
-                <button className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm hover:bg-pink-500 hover:text-white transition">
-                  ❤️ Wishlist
-                </button>
+                <CartButton courseId={course._id} />
+                <WishlistButton courseId={course._id} />
               </div>
             </div>
           </div>

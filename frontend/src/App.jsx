@@ -13,6 +13,8 @@ import axios from "axios";
 import NotFound from "./components/NotFount";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
+import Wishlist from "./pages/Wishlist";
+import Cart from "./pages/Cart";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -69,7 +71,8 @@ function App() {
             )
           }
         />
-
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
