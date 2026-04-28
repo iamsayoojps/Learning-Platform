@@ -18,7 +18,7 @@ const CartButton = ({ courseId }) => {
     try {
       setLoading(true);
 
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:5000/api/cart/add",
         { courseId },
         {
@@ -28,9 +28,9 @@ const CartButton = ({ courseId }) => {
         },
       );
 
-      alert("Added to cart 🛒");
+      alert(res.data.message);
     } catch (err) {
-      console.log(err.response?.data?.message);
+      alert(err.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ const CartButton = ({ courseId }) => {
     <button
       onClick={handleCart}
       disabled={loading}
-      className="flex-1 bg-indigo-600 text-white py-2 rounded-lg text-sm hover:bg-indigo-700 transition disabled:opacity-50"
+      className="flex-1 bg-indigo-600 text-white py-2 rounded-lg text-sm hover:bg-indigo-700 transition"
     >
       {loading ? "Adding..." : "Add to Cart"}
     </button>

@@ -22,14 +22,8 @@ const userSchema = new mongoose.Schema(
     // cart
     cart: [
       {
-        course: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Course",
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
       },
     ],
     // wishlist
