@@ -3,19 +3,21 @@ import axios from "axios";
 import FilterBar from "../components/FilterBar";
 import WishlistButton from "../common/WishlistButton";
 import CartButton from "../common/CartButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [purchasedCourses, setPurchasedCourses] = useState([]);
 
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState("");
   const [priceType, setPriceType] = useState("");
 
-  // ✅ NEW: Get search query from URL
   const location = useLocation();
+  const navigate = useNavigate();
+
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get("search") || "";
 
@@ -35,10 +37,35 @@ const Home = () => {
     fetchCourses();
   }, []);
 
+  // ✅ Fetch purchased courses
+  useEffect(() => {
+    const fetchPurchasedCourses = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/purchase/my-learning",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setPurchasedCourses(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPurchasedCourses();
+  }, []);
+
   useEffect(() => {
     let updated = [...courses];
 
-    // ✅ SEARCH
     if (searchQuery) {
       updated = updated.filter((course) => {
         const text = `${course.title || ""} ${course.description || ""} ${course.instructor || ""}`;
@@ -46,7 +73,6 @@ const Home = () => {
       });
     }
 
-    // ✅ CATEGORY (FIXED)
     if (category) {
       updated = updated.filter(
         (course) =>
@@ -114,69 +140,88 @@ const Home = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-        {filteredCourses.map((course) => (
-          <div
-            key={course._id}
-            className="group bg-white rounded-xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
-          >
-            <div className="relative overflow-hidden">
-              <img
-                src={course.thumbnail}
-                alt={course.title}
-                className="w-full h-44 object-cover group-hover:scale-110 transition duration-300"
-              />
+        {filteredCourses.map((course) => {
+          const isPurchased = purchasedCourses.some(
+            (item) => item._id === course._id,
+          );
 
-              {course.price > 0 && (
-                <span className="absolute top-2 left-2 bg-yellow-400 text-xs font-semibold px-2 py-1 rounded">
-                  Bestseller
-                </span>
-              )}
-            </div>
+          return (
+            <div
+              key={course._id}
+              className="group bg-white rounded-xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
+            >
+              <div className="relative overflow-hidden">
+                <img
+                  src={course.thumbnail}
+                  alt={course.title}
+                  className="w-full h-44 object-cover group-hover:scale-110 transition duration-300"
+                />
 
-            <div className="p-4 flex flex-col flex-1">
-              <h2 className="text-lg font-semibold text-gray-800 line-clamp-1 sm:line-clamp-2">
-                {course.title}
-              </h2>
-
-              <p className="text-sm text-gray-600 mt-1 line-clamp-2 sm:line-clamp-3">
-                {course.description}
-              </p>
-
-              <p className="text-sm mt-2">
-                Instructor:{" "}
-                <span className="font-medium text-gray-700">
-                  {course.instructor || "Unknown"}
-                </span>
-              </p>
-
-              <div className="flex items-center gap-1 mt-2 text-sm">
-                <span className="text-yellow-500 font-medium">4.5</span>
-                <span className="text-yellow-400">★★★★★</span>
-                <span className="text-gray-400 text-xs">(1,234)</span>
-              </div>
-
-              <div className="mt-2">
-                {course.price === 0 ? (
-                  <span className="text-green-600 font-bold text-lg">Free</span>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <span className="text-indigo-600 font-bold text-lg">
-                      ₹{course.price}
-                    </span>
-                    <span className="text-gray-400 line-through text-sm">
-                      ₹{course.price + 500}
-                    </span>
-                  </div>
+                {course.price > 0 && (
+                  <span className="absolute top-2 left-2 bg-yellow-400 text-xs font-semibold px-2 py-1 rounded">
+                    Bestseller
+                  </span>
                 )}
               </div>
 
-              <div className="flex gap-2 mt-auto pt-4">
-                <CartButton courseId={course._id} />
-                <WishlistButton courseId={course._id} />
+              <div className="p-4 flex flex-col flex-1">
+                <h2 className="text-lg font-semibold text-gray-800 line-clamp-1 sm:line-clamp-2">
+                  {course.title}
+                </h2>
+
+                <p className="text-sm text-gray-600 mt-1 line-clamp-2 sm:line-clamp-3">
+                  {course.description}
+                </p>
+
+                <p className="text-sm mt-2">
+                  Instructor:{" "}
+                  <span className="font-medium text-gray-700">
+                    {course.instructor || "Unknown"}
+                  </span>
+                </p>
+
+                <div className="flex items-center gap-1 mt-2 text-sm">
+                  <span className="text-yellow-500 font-medium">4.5</span>
+                  <span className="text-yellow-400">★★★★★</span>
+                  <span className="text-gray-400 text-xs">(1,234)</span>
+                </div>
+
+                <div className="mt-2">
+                  {course.price === 0 ? (
+                    <span className="text-green-600 font-bold text-lg">
+                      Free
+                    </span>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="text-indigo-600 font-bold text-lg">
+                        ₹{course.price}
+                      </span>
+                      <span className="text-gray-400 line-through text-sm">
+                        ₹{course.price + 500}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-2 mt-auto pt-4">
+                  {isPurchased ? (
+                    <button
+                      onClick={() => navigate(`/learn/${course._id}`)}
+                      className="w-full bg-green-600 text-white py-2 rounded-lg text-sm hover:bg-green-700 transition"
+                    >
+                      Start Learning
+                    </button>
+                  ) : (
+                    <>
+                      <CartButton courseId={course._id} />
+                      <WishlistButton courseId={course._id} />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

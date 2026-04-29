@@ -15,6 +15,9 @@ import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
+import MyLearning from "./pages/MyLearning";
+import Checkout from "./pages/Checkout";
+import LearnCourse from "./pages/LearnCource";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -73,6 +76,9 @@ function App() {
         />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/my-learning" element={<MyLearning />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/learn/:id" element={<LearnCourse />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

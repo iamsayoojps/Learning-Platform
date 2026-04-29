@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoute.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import purchaseRoutes from "./routes/purchaseRoutes.js";
 import { connectDB } from "./config/db.js";
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/api/users", authRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/purchase", purchaseRoutes);
 
 connectDB();
 
