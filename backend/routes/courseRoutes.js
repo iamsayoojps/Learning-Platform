@@ -5,23 +5,27 @@ import {
   getCourseById,
   deleteCourse,
   updateCourse,
+  getCourseCount,
 } from "../controllers/courseController.js";
-// import { protect, admin } from "../middleware/auth.js"; (optional)
 
 const router = express.Router();
 
 // POST /api/courses
 router.post("/", createCourse);
-// get
+
+// GET all courses
 router.get("/", getCourses);
 
-//admin get routes
+// 🔥 IMPORTANT: put count BEFORE :id
+router.get("/count", getCourseCount);
+
+// admin get single course
 router.get("/:id", getCourseById);
 
-//delete
+// delete
 router.delete("/:id", deleteCourse);
 
-//update
+// update
 router.put("/:id", updateCourse);
 
 export default router;

@@ -72,3 +72,14 @@ export const updateCourse = async (req, res) => {
     res.status(500).json({ message: "Error updating course" });
   }
 };
+
+// course count
+export const getCourseCount = async (req, res) => {
+  try {
+    const totalCourses = await Course.countDocuments();
+
+    res.json({ totalCourses });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching course count" });
+  }
+};

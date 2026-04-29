@@ -69,3 +69,25 @@ export const loginUser = async (req, res) => {
 export const getMe = async (req, res) => {
   res.status(200).json(req.user);
 };
+
+// Get total users
+export const getUserCount = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+
+    res.json({ totalUsers });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get all users
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

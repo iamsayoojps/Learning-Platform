@@ -1,4 +1,6 @@
 import User from "../models/userModel.js";
+import Order from "../models/orderModel.js";
+import Course from "../models/courseModel.js";
 
 // Buy all cart courses
 export const buyCourses = async (req, res) => {
@@ -11,7 +13,19 @@ export const buyCourses = async (req, res) => {
       });
     }
 
-    // Add cart items to purchasedCourses
+    // Get cart course details
+    const cartCourses = await Course.find({
+      _id: { $in: user.cart },
+    });
+
+    // Calculate total revenue
+    let totalAmount = 0;
+
+    cartCourses.forEach((course) => {
+      totalAmount += course.price;
+    });
+
+    // Add to purchased courses
     user.cart.forEach((courseId) => {
       const alreadyBought = user.purchasedCourses.find(
         (id) => id.toString() === courseId.toString(),
@@ -20,6 +34,15 @@ export const buyCourses = async (req, res) => {
       if (!alreadyBought) {
         user.purchasedCourses.push(courseId);
       }
+    });
+
+    // Save order
+    await Order.create({
+      userId: user._id,
+      username: user.username,
+      email: user.email,
+      courses: user.cart,
+      totalAmount,
     });
 
     // Clear cart
@@ -50,8 +73,7 @@ export const getPurchasedCourses = async (req, res) => {
   }
 };
 
-// remove courses
-
+// Remove purchased course
 export const removePurchasedCourse = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
