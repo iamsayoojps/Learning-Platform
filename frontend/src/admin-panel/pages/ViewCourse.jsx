@@ -20,7 +20,7 @@ const ViewCourse = () => {
     try {
       await axios.delete(`http://localhost:5000/api/courses/${id}`);
       alert("Course deleted");
-      navigate("/courses");
+      navigate("/admin/courses");
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +54,7 @@ const ViewCourse = () => {
         {/* Buttons */}
         <div className="flex gap-3 mt-6">
           <button
-            onClick={() => navigate(`/courses/edit/${id}`)}
+            onClick={() => navigate(`/admin/courses/edit/${id}`)}
             className="bg-green-500 text-white px-4 py-2 rounded"
           >
             Edit

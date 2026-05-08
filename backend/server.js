@@ -8,6 +8,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import purchaseRoutes from "./routes/purchaseRoutes.js";
 import { connectDB } from "./config/db.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/admin", adminRoutes);
 
 connectDB();
 

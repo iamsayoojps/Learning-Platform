@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const EditCourse = () => {
-  const { id } = useParams();
+const AddCourse = () => {
   const navigate = useNavigate();
 
   const [course, setCourse] = useState({
@@ -15,99 +14,92 @@ const EditCourse = () => {
     thumbnail: "",
   });
 
-  // ✅ Fetch existing course (prefill)
-  useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/courses/${id}`);
-        setCourse(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCourse();
-  }, [id]);
-
-  // handle input change
   const handleChange = (e) => {
     setCourse({ ...course, [e.target.name]: e.target.value });
   };
 
-  // ✅ Update course
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      await axios.put(`http://localhost:5000/api/courses/${id}`, {
-        ...course,
-        price: Number(course.price),
-      });
+    // simple validation
+    if (!course.title || !course.price || !course.category) {
+      alert("Please fill all required fields");
+      return;
+    }
 
-      alert("Course updated successfully");
-      navigate(`/courses/view/${id}`);
+    try {
+      await axios.post("http://localhost:5000/api/courses", course);
+
+      alert("Course added successfully");
+
+      navigate("/admin/courses");
     } catch (error) {
       console.log(error);
-      alert("Error updating course");
+      alert("Error adding course");
     }
   };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen flex justify-center items-center">
       <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg">
-        <h2 className="text-2xl font-semibold mb-4">Edit Course</h2>
+        <h2 className="text-2xl font-semibold mb-4">Add New Course</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="title"
+            placeholder="Course Title"
             value={course.title}
             onChange={handleChange}
             className="w-full border p-2 rounded"
-            placeholder="Course Title"
           />
 
           <input
             name="instructor"
+            placeholder="Instructor Name"
             value={course.instructor}
             onChange={handleChange}
             className="w-full border p-2 rounded"
-            placeholder="Instructor"
           />
 
           <input
             name="price"
             type="number"
+            placeholder="Price"
             value={course.price}
             onChange={handleChange}
             className="w-full border p-2 rounded"
-            placeholder="Price"
           />
 
-          <input
+          <select
             name="category"
             value={course.category}
             onChange={handleChange}
             className="w-full border p-2 rounded"
-            placeholder="Category"
-          />
+          >
+            <option value="">Select Category</option>
+            <option value="Development">Development</option>
+            <option value="AI">AI</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Cooking">Cooking</option>
+          </select>
 
           <input
             name="thumbnail"
+            placeholder="Thumbnail Image URL"
             value={course.thumbnail}
             onChange={handleChange}
             className="w-full border p-2 rounded"
-            placeholder="Thumbnail URL"
           />
 
           <textarea
             name="description"
+            placeholder="Description"
             value={course.description}
             onChange={handleChange}
             className="w-full border p-2 rounded"
-            placeholder="Description"
           />
 
-          {/* Preview */}
+          {/* Image Preview */}
           {course.thumbnail && (
             <img
               src={course.thumbnail}
@@ -116,8 +108,11 @@ const EditCourse = () => {
             />
           )}
 
-          <button className="w-full bg-green-600 text-white py-2 rounded">
-            Update Course
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
+            Add Course
           </button>
         </form>
       </div>
@@ -125,4 +120,4 @@ const EditCourse = () => {
   );
 };
 
-export default EditCourse;
+export default AddCourse;

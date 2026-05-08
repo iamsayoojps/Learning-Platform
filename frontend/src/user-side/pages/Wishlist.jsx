@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import CartButton from "../common/CartButton";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWishlist = async () => {
       const token = localStorage.getItem("token");
-
-      if (!token) {
-        alert("Please login first");
-        navigate("/login");
-        return;
-      }
 
       try {
         const res = await axios.get("http://localhost:5000/api/wishlist", {
@@ -31,7 +23,7 @@ const Wishlist = () => {
     };
 
     fetchWishlist();
-  }, [navigate]);
+  }, []);
 
   const handleRemove = async (id) => {
     const token = localStorage.getItem("token");
@@ -44,8 +36,6 @@ const Wishlist = () => {
       });
 
       setWishlist((prev) => prev.filter((item) => item._id !== id));
-
-      alert("Course removed from wishlist ❌");
     } catch (err) {
       console.log(err);
     }

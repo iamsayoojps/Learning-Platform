@@ -87,16 +87,19 @@ const Navbar = ({ user, setUser }) => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/wishlist" className="text-white hover:text-orange-400">
-              <Heart size={27} />
-            </Link>
-
-            <Link to="/cart" className="text-white hover:text-orange-400">
-              <ShoppingCart size={27} />
-            </Link>
-
             {user ? (
               <>
+                <Link
+                  to="/wishlist"
+                  className="text-white hover:text-orange-400"
+                >
+                  <Heart size={27} />
+                </Link>
+
+                <Link to="/cart" className="text-white hover:text-orange-400">
+                  <ShoppingCart size={27} />
+                </Link>
+
                 <Link
                   to="/notifications"
                   className="text-white hover:text-orange-400"
@@ -104,7 +107,6 @@ const Navbar = ({ user, setUser }) => {
                   <Bell size={27} />
                 </Link>
 
-                {/* My Learning */}
                 <Link
                   to="/my-learning"
                   className="text-white hover:text-orange-400"

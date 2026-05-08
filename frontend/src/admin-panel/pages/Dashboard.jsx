@@ -44,7 +44,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-3 gap-4 mt-6">
         {/* Courses */}
         <div
-          onClick={() => navigate("/courses")}
+          onClick={() => navigate("/admin/courses")}
           className="bg-blue-500 text-white p-4 rounded cursor-pointer hover:scale-105 transition"
         >
           <p className="font-bold text-lg">Total Courses</p>
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
         {/* Users */}
         <div
-          onClick={() => navigate("/users")}
+          onClick={() => navigate("/admin/users")}
           className="bg-green-500 text-white p-4 rounded cursor-pointer hover:scale-105 transition"
         >
           <p className="font-bold text-lg">Total Users</p>
@@ -62,7 +62,7 @@ const Dashboard = () => {
 
         {/* Revenue */}
         <div
-          onClick={() => navigate("/revenue")}
+          onClick={() => navigate("/admin/revenue")}
           className="bg-purple-500 text-white p-4 rounded cursor-pointer hover:scale-105 transition"
         >
           <p className="font-bold text-lg">Revenue</p>

@@ -16,7 +16,7 @@ router.post("/", createCourse);
 // GET all courses
 router.get("/", getCourses);
 
-// 🔥 IMPORTANT: put count BEFORE :id
+// IMPORTANT: put count BEFORE :id
 router.get("/count", getCourseCount);
 
 // admin get single course

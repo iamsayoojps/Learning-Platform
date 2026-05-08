@@ -21,7 +21,7 @@ const Courses = () => {
         <h2 className="text-3xl font-semibold text-gray-800">All Courses</h2>
 
         <Link
-          to="/courses/add"
+          to="/admin/courses/add"
           className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow"
         >
           + Add Course
@@ -52,7 +52,7 @@ const Courses = () => {
 
                 <td className="px-6 py-4">
                   <Link
-                    to={`/courses/view/${course._id}`}
+                    to={`/admin/courses/view/${course._id}`}
                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
                   >
                     View
